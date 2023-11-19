@@ -1,23 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $Title$
+  name: user-service-deployment
   labels:
-    app: $Title$
+    app: user-service-deployment
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
-      app: $Title$
+      app: user-service
   template:
     metadata:
-      name: $Title$
+      name: user-service
       labels:
-        app: $Title$
+        app: user-service
     spec:
       containers:
-        - name: $Title$
-          image: $Image$
+        - name: user-service-container
+          image: user-service:1.0.2
           imagePullPolicy: IfNotPresent
-      restartPolicy: Always
-      $END$
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: PORT
+                  name: user-service-config
+            - name: MONGODB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_HOST
+                  name: user-service-config
+            - name: MONGODB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MONGODB_PORT
+                  name: user-service-config
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name

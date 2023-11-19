@@ -4,4 +4,5 @@ metadata:
   name: user-service-config
 data:
   PORT: "8080"
-  
+  MONGODB_HOST: "mongodb-service" # Nome do Service do MongoDB no Kubernetes
+  MONGODB_PORT: "27017"
